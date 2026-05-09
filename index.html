@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Magic of Repeated Words</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #1b2d42;
+    --cream: #fef8f0;
+    --gold: #c9973a;
+    --gold-light: #f0c96e;
+    --teal: #1e7e7a;
+    --teal-light: #2ab5af;
+    --rose: #c94f4f;
+    --rose-light: #e8908a;
+    --sage: #4a7c59;
+    --sage-light: #7dbf8e;
+    --lavender: #6b5b9e;
+    --lav-light: #a58fd4;
+    --ink: #1a1a2e;
+    --muted: #6b7280;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.8rem 2rem;
+    background: rgba(13,27,42,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,151,58,0.25);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
+  }
+  .nav-controls { display: flex; align-items: center; gap: 1rem; }
+  .lang-toggle {
+    display: flex; background: rgba(255,255,255,0.08); border-radius: 8px; overflow: hidden;
+    border: 1px solid rgba(201,151,58,0.3);
+  }
+  .lang-btn {
+    padding: 0.35rem 0.8rem; font-size: 0.78rem; font-weight: 600; cursor: pointer;
+    border: none; background: transparent; color: rgba(255,255,255,0.5);
+    font-family: 'DM Sans', sans-serif; letter-spacing: 0.05em; transition: all 0.2s;
+  }
+  .lang-btn.active { background: var(--gold); color: var(--navy); }
+  .nav-links { display: flex; gap: 1.5rem; }
+  .nav-links a {
+    color: rgba(255,255,255,0.65); font-size: 0.8rem; text-decoration: none;
+    letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; padding: 5rem 2rem 3rem;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 40%, rgba(30,126,122,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 80% 60%, rgba(107,91,158,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 50% 10%, rgba(201,151,58,0.12) 0%, transparent 50%);
+  }
+  .hero-bubbles {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .bubble {
+    position: absolute;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 50% 50% 50% 4px;
+    animation: float 8s ease-in-out infinite;
+  }
+  .bubble:nth-child(1) { width: 140px; height: 90px; top: 12%; left: 5%; animation-delay: 0s; }
+  .bubble:nth-child(2) { width: 110px; height: 70px; top: 20%; right: 8%; animation-delay: 1.5s; border-radius: 50% 50% 4px 50%; }
+  .bubble:nth-child(3) { width: 90px; height: 60px; bottom: 20%; left: 10%; animation-delay: 3s; }
+  .bubble:nth-child(4) { width: 130px; height: 80px; bottom: 15%; right: 5%; animation-delay: 4.5s; border-radius: 50% 50% 4px 50%; }
+  .bubble:nth-child(5) { width: 80px; height: 55px; top: 50%; left: 2%; animation-delay: 2s; }
+  .bubble:nth-child(6) { width: 100px; height: 65px; top: 40%; right: 2%; animation-delay: 3.5s; border-radius: 50% 4px 50% 50%; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-12px) rotate(1.5deg); }
+    66% { transform: translateY(6px) rotate(-1deg); }
+  }
+
+  .hero-tag {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; font-family: 'Space Mono', monospace;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-weight: 900; color: var(--cream); text-align: center;
+    line-height: 1.05; letter-spacing: -0.02em;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero-title em {
+    color: var(--gold-light); font-style: normal;
+    display: inline-block;
+    animation: shimmer 3s 1.5s ease infinite;
+  }
+  @keyframes shimmer {
+    0%, 100% { color: var(--gold-light); }
+    50% { color: #fff8e0; }
+  }
+  .hero-sub {
+    margin-top: 1.2rem; max-width: 580px; text-align: center;
+    color: rgba(255,255,255,0.6); font-size: 1.05rem; line-height: 1.7;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+  .hero-flags { display: flex; gap: 0.5rem; margin-top: 1rem; animation: fadeUp 0.8s 0.3s ease both; }
+  .flag { font-size: 1.8rem; }
+  .hero-stats {
+    display: flex; gap: 2.5rem; margin-top: 2.5rem;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 700; color: var(--gold-light);
+  }
+  .stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.45); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.2rem; }
+  .hero-cta {
+    margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+  .btn {
+    padding: 0.75rem 1.8rem; border-radius: 8px; font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; letter-spacing: 0.04em;
+    text-decoration: none; transition: all 0.25s; border: none; display: inline-block;
+  }
+  .btn-primary { background: var(--gold); color: var(--navy); }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,151,58,0.4); }
+  .btn-outline { background: transparent; color: var(--cream); border: 1.5px solid rgba(255,255,255,0.3); }
+  .btn-outline:hover { border-color: var(--gold-light); color: var(--gold-light); transform: translateY(-2px); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── ABOUT ── */
+  #about {
+    padding: 5rem 2rem;
+    background: var(--cream);
+  }
+  .section-container { max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); font-weight: 700; font-family: 'Space Mono', monospace;
+    margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800;
+    color: var(--navy); line-height: 1.15; margin-bottom: 1rem;
+  }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem;
+  }
+  .about-card {
+    background: white; border-radius: 16px; padding: 2rem;
+    border: 1px solid rgba(13,27,42,0.08);
+    box-shadow: 0 2px 16px rgba(13,27,42,0.06);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .about-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(13,27,42,0.12); }
+  .about-card-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+  .about-card h3 {
+    font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+  .about-card p { font-size: 0.9rem; line-height: 1.7; color: var(--muted); }
+  .about-card .en-text { display: block; }
+  .about-card .tr-text { display: none; }
+  body.tr .about-card .en-text { display: none; }
+  body.tr .about-card .tr-text { display: block; }
+
+  /* ── SEARCH ── */
+  .search-bar {
+    max-width: 540px; margin: 2.5rem auto 0;
+    position: relative;
+  }
+  .search-bar input {
+    width: 100%; padding: 0.85rem 3rem 0.85rem 1.2rem;
+    border: 2px solid rgba(13,27,42,0.15); border-radius: 12px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+    background: white; color: var(--navy);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .search-bar input:focus { border-color: var(--gold); }
+  .search-bar .search-icon {
+    position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+    color: var(--muted); font-size: 1.1rem; pointer-events: none;
+  }
+
+  /* ── CATEGORY TABS ── */
+  .cat-tabs {
+    display: flex; gap: 0.6rem; flex-wrap: wrap;
+    margin: 1.5rem 0;
+  }
+  .cat-tab {
+    padding: 0.45rem 1rem; border-radius: 100px; font-size: 0.8rem; font-weight: 600;
+    cursor: pointer; border: 1.5px solid transparent; transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .cat-tab.all { background: var(--navy); color: white; }
+  .cat-tab.same { border-color: var(--teal); color: var(--teal); }
+  .cat-tab.same.active, .cat-tab.same:hover { background: var(--teal); color: white; }
+  .cat-tab.similar { border-color: var(--rose); color: var(--rose); }
+  .cat-tab.similar.active, .cat-tab.similar:hover { background: var(--rose); color: white; }
+  .cat-tab.antonym { border-color: var(--sage); color: var(--sage); }
+  .cat-tab.antonym.active, .cat-tab.antonym:hover { background: var(--sage); color: white; }
+  .cat-tab.rhyme { border-color: var(--lavender); color: var(--lavender); }
+  .cat-tab.rhyme.active, .cat-tab.rhyme:hover { background: var(--lavender); color: white; }
+  .cat-tab.all.active, .cat-tab.all:hover { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+  .lang-filter { display: flex; gap: 0.6rem; }
+  .lang-filter-btn {
+    padding: 0.45rem 0.9rem; border-radius: 100px; font-size: 0.78rem; font-weight: 600;
+    cursor: pointer; border: 1.5px solid rgba(13,27,42,0.2); background: white; color: var(--muted);
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .lang-filter-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+
+  /* ── WORDS SECTION ── */
+  #words { padding: 4rem 2rem 5rem; background: #f4efea; }
+  .words-header { margin-bottom: 2rem; }
+  .words-count {
+    font-size: 0.8rem; color: var(--muted); font-family: 'Space Mono', monospace;
+    margin-top: 0.5rem;
+  }
+
+  /* ── CARDS GRID ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .word-card {
+    background: white; border-radius: 16px; overflow: hidden;
+    border: 1px solid rgba(13,27,42,0.07);
+    box-shadow: 0 2px 12px rgba(13,27,42,0.06);
+    transition: transform 0.25s, box-shadow 0.25s;
+    cursor: pointer;
+  }
+  .word-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(13,27,42,0.13); }
+  .word-card.hidden { display: none; }
+
+  .card-top {
+    padding: 1.2rem 1.4rem 1rem;
+    border-bottom: 1px solid rgba(13,27,42,0.06);
+  }
+  .card-cat-badge {
+    display: inline-block; padding: 0.22rem 0.65rem;
+    border-radius: 6px; font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.6rem;
+    font-family: 'Space Mono', monospace;
+  }
+  .badge-same { background: rgba(30,126,122,0.12); color: var(--teal); }
+  .badge-similar { background: rgba(201,79,79,0.1); color: var(--rose); }
+  .badge-antonym { background: rgba(74,124,89,0.1); color: var(--sage); }
+  .badge-rhyme { background: rgba(107,91,158,0.1); color: var(--lavender); }
+  .badge-en { background: rgba(201,151,58,0.12); color: var(--gold); }
+  .badge-tr { background: rgba(220,60,40,0.1); color: #c0392b; }
+
+  .card-word {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem; font-weight: 800; color: var(--navy); line-height: 1.1;
+  }
+  .card-phonetic {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem;
+    letter-spacing: 0.02em;
+  }
+
+  .card-body { padding: 1rem 1.4rem 1.4rem; }
+  .card-meaning-row { display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.6rem; }
+  .card-flag { font-size: 0.95rem; flex-shrink: 0; margin-top: 0.05rem; }
+  .card-meaning {
+    font-size: 0.92rem; color: var(--navy); font-weight: 600; line-height: 1.3;
+  }
+  .card-meaning-tr { color: #c0392b; }
+  .card-example {
+    font-size: 0.83rem; color: var(--muted); line-height: 1.6;
+    border-left: 2px solid rgba(13,27,42,0.1); padding-left: 0.7rem; margin-top: 0.8rem;
+    font-style: italic;
+  }
+  .card-structure {
+    display: flex; gap: 0.4rem; margin-top: 0.9rem; flex-wrap: wrap; align-items: center;
+  }
+  .struct-pill {
+    background: rgba(13,27,42,0.05); border-radius: 5px; padding: 0.2rem 0.5rem;
+    font-size: 0.7rem; color: var(--muted); font-family: 'Space Mono', monospace;
+  }
+  .struct-plus { color: var(--muted); font-size: 0.75rem; }
+
+  /* ── CATEGORY SECTION HEADERS ── */
+  .cat-section { margin-bottom: 3rem; }
+  .cat-section-header {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+  }
+  .cat-section-line { flex: 1; height: 1px; background: rgba(13,27,42,0.1); }
+  .cat-section-title {
+    font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700;
+    white-space: nowrap;
+  }
+  .cat-section-count {
+    font-size: 0.75rem; color: var(--muted); font-family: 'Space Mono', monospace;
+  }
+
+  /* ── STRUCTURE EXPLAINER ── */
+  #structure { padding: 5rem 2rem; background: var(--navy); }
+  .struct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem; }
+  .struct-card {
+    border-radius: 14px; padding: 1.8rem;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .struct-card-1 { background: rgba(30,126,122,0.15); border-color: rgba(30,126,122,0.25); }
+  .struct-card-2 { background: rgba(201,79,79,0.12); border-color: rgba(201,79,79,0.25); }
+  .struct-card-3 { background: rgba(74,124,89,0.12); border-color: rgba(74,124,89,0.25); }
+  .struct-card-4 { background: rgba(107,91,158,0.15); border-color: rgba(107,91,158,0.25); }
+  .struct-card h3 {
+    font-family: 'Playfair Display', serif; font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+  }
+  .struct-card-1 h3 { color: var(--teal-light); }
+  .struct-card-2 h3 { color: var(--rose-light); }
+  .struct-card-3 h3 { color: var(--sage-light); }
+  .struct-card-4 h3 { color: var(--lav-light); }
+  .struct-card p { color: rgba(255,255,255,0.6); font-size: 0.88rem; line-height: 1.7; }
+  .struct-example {
+    margin-top: 1rem; background: rgba(255,255,255,0.06); border-radius: 8px;
+    padding: 0.6rem 0.9rem; font-family: 'Space Mono', monospace;
+    font-size: 0.78rem; color: rgba(255,255,255,0.7);
+  }
+  #structure .section-title { color: var(--cream); }
+  #structure .section-tag { color: var(--gold); }
+
+  /* ── QR SECTION ── */
+  #qr-section { padding: 5rem 2rem; background: var(--cream); text-align: center; }
+  .qr-box {
+    display: inline-block; background: white; border-radius: 20px;
+    padding: 2rem; margin-top: 2rem;
+    box-shadow: 0 4px 32px rgba(13,27,42,0.1);
+    border: 1px solid rgba(13,27,42,0.08);
+  }
+  #qrcode { margin: 0 auto; }
+  .qr-url {
+    font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--muted);
+    margin-top: 1rem; word-break: break-all;
+  }
+  .qr-instructions {
+    max-width: 480px; margin: 1.5rem auto 0;
+    color: var(--muted); font-size: 0.88rem; line-height: 1.7;
+  }
+
+  /* ── DEPLOY SECTION ── */
+  #deploy { padding: 4rem 2rem 5rem; background: var(--navy-mid); }
+  #deploy .section-title { color: var(--cream); }
+  #deploy .section-tag { color: var(--gold); }
+  .deploy-steps { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .deploy-step {
+    display: flex; gap: 1rem; align-items: flex-start;
+    background: rgba(255,255,255,0.05); border-radius: 12px; padding: 1.2rem 1.5rem;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .step-num {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--gold);
+    color: var(--navy); font-weight: 800; font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    font-family: 'Space Mono', monospace;
+  }
+  .step-content h4 { color: var(--cream); font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .step-content p { color: rgba(255,255,255,0.55); font-size: 0.85rem; line-height: 1.6; }
+  .step-content code {
+    display: inline-block; background: rgba(201,151,58,0.15); color: var(--gold-light);
+    border-radius: 5px; padding: 0.15rem 0.4rem; font-family: 'Space Mono', monospace;
+    font-size: 0.78rem; margin-top: 0.3rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy); padding: 2rem;
+    text-align: center; color: rgba(255,255,255,0.35);
+    font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  footer span { color: var(--gold-light); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(13,27,42,0.8); backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center; padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: white; border-radius: 20px; max-width: 520px; width: 100%;
+    overflow: hidden; animation: modalPop 0.3s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .modal-header {
+    padding: 1.5rem 1.8rem 1rem;
+    border-bottom: 1px solid rgba(13,27,42,0.08);
+    display: flex; align-items: flex-start; justify-content: space-between;
+  }
+  .modal-word {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 800; color: var(--navy);
+  }
+  .modal-phonetic {
+    font-family: 'Space Mono', monospace; font-size: 0.8rem;
+    color: var(--muted); margin-top: 0.3rem;
+  }
+  .modal-close {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(13,27,42,0.07);
+    border: none; cursor: pointer; font-size: 1.1rem; color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: background 0.2s;
+  }
+  .modal-close:hover { background: rgba(13,27,42,0.14); }
+  .modal-body { padding: 1.4rem 1.8rem 1.8rem; }
+  .modal-row { margin-bottom: 1.1rem; }
+  .modal-row label {
+    font-size: 0.67rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); font-family: 'Space Mono', monospace; display: block; margin-bottom: 0.3rem;
+  }
+  .modal-row .value { font-size: 0.95rem; color: var(--navy); line-height: 1.6; }
+  .modal-row .value.example { font-style: italic; color: var(--muted); }
+  .modal-row .value.tr { color: #c0392b; font-weight: 600; }
+  .modal-divider { height: 1px; background: rgba(13,27,42,0.07); margin: 1rem 0; }
+  .modal-struct-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+  /* ── LANG VISIBILITY ── */
+  .en-text { display: block; }
+  .tr-text { display: none; }
+  body.tr .en-text { display: none; }
+  body.tr .tr-text { display: block; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .struct-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hero-stats { gap: 1.5rem; }
+    .cards-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">✦ The Magic of Repeated Words</div>
+  <div class="nav-controls">
+    <nav class="nav-links">
+      <a href="#about" class="en-text">About</a>
+      <a href="#about" class="tr-text">Hakkında</a>
+      <a href="#words" class="en-text">Words</a>
+      <a href="#words" class="tr-text">Kelimeler</a>
+      <a href="#structure" class="en-text">Structure</a>
+      <a href="#structure" class="tr-text">Yapı</a>
+      <a href="#qr-section">QR</a>
+    </nav>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('tr')">TR</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-bubbles">
+    <div class="bubble"></div><div class="bubble"></div>
+    <div class="bubble"></div><div class="bubble"></div>
+    <div class="bubble"></div><div class="bubble"></div>
+  </div>
+  <p class="hero-tag en-text">✦ Linguistics · Reduplication · İkileme</p>
+  <p class="hero-tag tr-text">✦ Dilbilim · Yineleme · Reduplication</p>
+  <h1 class="hero-title">The Magic of<br><em>Repeated Words</em></h1>
+  <p class="hero-sub en-text">
+    A bilingual dictionary of English reduplication phrases and Turkish <em style="color:var(--gold-light);">ikİleme</em> — words that double up to create richer meaning.
+  </p>
+  <p class="hero-sub tr-text">
+    İngilizce yineleme ifadeleri ve Türkçe <em style="color:var(--gold-light);">İkileme</em> sözcüklerinin iki dilli sözlüğü — daha zengin anlam yaratmak için ikiye katlanan kelimeler.
+  </p>
+  <div class="hero-flags"><span class="flag">🇬🇧</span><span class="flag">🇹🇷</span></div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">130+</div><div class="stat-label en-text">Words</div><div class="stat-label tr-text">Kelime</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label en-text">Categories</div><div class="stat-label tr-text">Kategori</div></div>
+    <div class="stat"><div class="stat-num">2</div><div class="stat-label en-text">Languages</div><div class="stat-label tr-text">Dil</div></div>
+  </div>
+  <div class="hero-cta">
+    <a href="#words" class="btn btn-primary en-text">Explore Words ↓</a>
+    <a href="#words" class="btn btn-primary tr-text">Kelimeleri Keşfet ↓</a>
+    <a href="#structure" class="btn btn-outline en-text">Learn the Structure</a>
+    <a href="#structure" class="btn btn-outline tr-text">Yapıyı Öğren</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-container">
+    <p class="section-tag en-text">What is reduplication?</p>
+    <p class="section-tag tr-text">İkileme nedir?</p>
+    <h2 class="section-title en-text">Words that love<br>to repeat themselves</h2>
+    <h2 class="section-title tr-text">Kendini tekrar etmeyi<br>seven kelimeler</h2>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-card-icon">🔁</div>
+        <h3 class="en-text">Reduplication in English</h3>
+        <h3 class="tr-text">İngilizce'de Yineleme</h3>
+        <p class="en-text">Reduplication is a linguistic process where a word or phrase is repeated—either exactly or with slight modification—to create a new meaning, add emphasis, or express a nuance. English uses it extensively in idioms and fixed expressions.</p>
+        <p class="tr-text">Yineleme, yeni bir anlam oluşturmak, vurgu katmak veya bir nüans ifade etmek için bir kelime ya da ifadenin—tam olarak ya da küçük değişikliklerle—tekrar edildiği dilbilimsel bir süreçtir. İngilizce bunu deyimlerde ve sabit ifadelerde yoğunlukla kullanır.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🌀</div>
+        <h3 class="en-text">İkileme in Turkish</h3>
+        <h3 class="tr-text">Türkçe'de İkileme</h3>
+        <p class="en-text">In Turkish, <strong>İkileme</strong> (ikilemeler) are paired word forms — two words placed together that complement, contrast or rhyme with each other. They are deeply embedded in everyday Turkish speech and add vividness and rhythm to language.</p>
+        <p class="tr-text">Türkçede <strong>İkileme</strong> (ikilemeler), birbirini tamamlayan, zıt olan ya da kafiyeli iki kelimenin bir araya gelmesidir. Günlük Türkçe konuşmasına derinden işlemiştir ve dile canlılık ile ritim katar.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">📚</div>
+        <h3 class="en-text">4 Types We Cover</h3>
+        <h3 class="tr-text">Ele Aldığımız 4 Tür</h3>
+        <p class="en-text"><strong>Same Word</strong> — the exact word repeated ("step by step"). <strong>Similar Sound</strong> — near-rhyming words ("bread and butter"). <strong>Antonyms</strong> — opposites joined ("black and white"). <strong>Rhyming</strong> — rhyme-based pairs ("itsy bitsy").</p>
+        <p class="tr-text"><strong>Aynı Kelime</strong> — kelimenin tekrarı ("adım adım"). <strong>Benzer Ses</strong> — yakın sesli kelimeler ("ekmek teknesi"). <strong>Zıt Anlamlı</strong> — karşıtlar ("gece gündüz"). <strong>Kafiyeli</strong> — kafiye tabanlı çiftler ("allak bullak").</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🗣️</div>
+        <h3 class="en-text">Why They Matter</h3>
+        <h3 class="tr-text">Neden Önemlidirler?</h3>
+        <p class="en-text">These phrases add color, emphasis, and rhythm to speech. Knowing them helps you understand native speakers, read between the lines in literature, and sound more natural yourself when speaking.</p>
+        <p class="tr-text">Bu ifadeler konuşmaya renk, vurgu ve ritim katar. Bunları bilmek; ana dil konuşucularını anlamanıza, edebiyatta satır aralarını okumanıza ve konuşurken kendinizin daha doğal ses çıkarmanıza yardımcı olur.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORDS SECTION -->
+<section id="words">
+  <div class="section-container">
+    <div class="words-header">
+      <p class="section-tag en-text">The Dictionary</p>
+      <p class="section-tag tr-text">Sözlük</p>
+      <h2 class="section-title en-text">Explore All Words</h2>
+      <h2 class="section-title tr-text">Tüm Kelimeleri Keşfet</h2>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search words... / Kelime ara..." oninput="filterCards()">
+        <span class="search-icon">🔍</span>
+      </div>
+      <div style="display:flex; gap:1rem; margin-top:1.2rem; flex-wrap:wrap; align-items:center;">
+        <div class="cat-tabs">
+          <button class="cat-tab all active" onclick="filterCat('all',this)"><span class="en-text">All</span><span class="tr-text">Tümü</span></button>
+          <button class="cat-tab same" onclick="filterCat('same',this)"><span class="en-text">Same Word</span><span class="tr-text">Aynı Kelime</span></button>
+          <button class="cat-tab similar" onclick="filterCat('similar',this)"><span class="en-text">Similar Sound</span><span class="tr-text">Benzer Ses</span></button>
+          <button class="cat-tab antonym" onclick="filterCat('antonym',this)"><span class="en-text">Antonyms</span><span class="tr-text">Zıt Anlamlı</span></button>
+          <button class="cat-tab rhyme" onclick="filterCat('rhyme',this)"><span class="en-text">Rhyming</span><span class="tr-text">Kafiyeli</span></button>
+        </div>
+        <div class="lang-filter">
+          <button class="lang-filter-btn active" onclick="filterLang('both',this)">🇬🇧+🇹🇷</button>
+          <button class="lang-filter-btn" onclick="filterLang('en',this)">🇬🇧 EN</button>
+          <button class="lang-filter-btn" onclick="filterLang('tr',this)">🇹🇷 TR</button>
+        </div>
+      </div>
+      <p class="words-count" id="wordCount"></p>
+    </div>
+    <div class="cards-grid" id="cardsGrid"></div>
+  </div>
+</section>
+
+<!-- STRUCTURE -->
+<section id="structure">
+  <div class="section-container">
+    <p class="section-tag en-text">Grammar & Linguistics</p>
+    <p class="section-tag tr-text">Dilbilgisi & Dilbilim</p>
+    <h2 class="section-title en-text">Understanding the Structure</h2>
+    <h2 class="section-title tr-text">Yapıyı Anlamak</h2>
+    <div class="struct-grid">
+      <div class="struct-card struct-card-1">
+        <h3 class="en-text">① Same Word Repetition</h3>
+        <h3 class="tr-text">① Aynı Kelimenin Tekrarı</h3>
+        <p class="en-text">The same word (or near-identical form) is repeated, often with a connector (and, by, to, in). Adds emphasis or describes a gradual/continuous action. Turkish uses direct repetition to show manner or intensity.</p>
+        <p class="tr-text">Aynı kelime (ya da hemen hemen aynı biçim), genellikle bir bağlaçla (and, by, to, in) tekrarlanır. Vurgu ekler veya aşamalı/sürekli bir eylemi tanımlar. Türkçe, tavır veya yoğunluğu göstermek için doğrudan tekrar kullanır.</p>
+        <div class="struct-example">WORD + [connector] + WORD<br>e.g. "step <span style="color:var(--gold-light)">by</span> step" · "adım adım"</div>
+      </div>
+      <div class="struct-card struct-card-2">
+        <h3 class="en-text">② Similar Sound Repetition</h3>
+        <h3 class="tr-text">② Benzer Ses Tekrarı</h3>
+        <p class="en-text">Two words with similar (but not identical) sounds are paired. Often alliterative — sharing initial consonants or vowel sounds. Creates a pleasing rhythm and is often idiomatic. Turkish equivalents use vowel harmony.</p>
+        <p class="tr-text">Benzer (ama aynı olmayan) seslere sahip iki kelime eşleştirilir. Genellikle aliterasyon içerir — başlangıç ünsüzlerini veya ünlü seslerini paylaşır. Hoş bir ritim yaratır ve genellikle deyimseldir. Türkçe karşılıkları ünlü uyumunu kullanır.</p>
+        <div class="struct-example">WORD-A + and + WORD-B (similar sounds)<br>e.g. "spick <span style="color:var(--rose-light)">and</span> span" · "şan şöhret"</div>
+      </div>
+      <div class="struct-card struct-card-3">
+        <h3 class="en-text">③ Repetition of Antonyms</h3>
+        <h3 class="tr-text">③ Zıt Anlamlı Kelimelerin Tekrarı</h3>
+        <p class="en-text">Two words with opposite meanings are joined to express totality, completeness, or all possibilities. This is universal — found in both English and Turkish. The combination often means "everything" or "in every way."</p>
+        <p class="tr-text">Zıt anlamlı iki kelime, bütünlüğü, tamlığı veya tüm olasılıkları ifade etmek için birleştirilir. Bu evrenseldir — hem İngilizce'de hem de Türkçe'de bulunur. Kombinasyon genellikle "her şey" veya "her şekilde" anlamına gelir.</p>
+        <div class="struct-example">ANTONYM-A + [and/or] + ANTONYM-B<br>e.g. "black <span style="color:var(--sage-light)">and</span> white" · "iyi kötü"</div>
+      </div>
+      <div class="struct-card struct-card-4">
+        <h3 class="en-text">④ Rhyming Words Repetition</h3>
+        <h3 class="tr-text">④ Kafiyeli Kelimelerin Tekrarı</h3>
+        <p class="en-text">Two words that rhyme with each other are paired. Often one word is the "real" word and the other is a nonsense rhyming word created to accompany it. Common in informal, playful, or colloquial speech.</p>
+        <p class="tr-text">Birbirleriyle kafiyeli iki kelime eşleştirilir. Çoğu zaman bir kelime "gerçek" kelimedir ve diğeri onu tamamlamak için oluşturulmuş saçma bir kafiye kelimesidir. Gayri resmi, oyuncu veya günlük konuşmada yaygındır.</p>
+        <div class="struct-example">WORD-A + WORD-B (rhyming)<br>e.g. "itsy <span style="color:var(--lav-light)">bitsy</span>" · "allak bullak"</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QR SECTION -->
+<section id="qr-section">
+  <div class="section-container">
+    <p class="section-tag en-text">Share This Site</p>
+    <p class="section-tag tr-text">Bu Siteyi Paylaş</p>
+    <h2 class="section-title en-text">Scan the QR Code</h2>
+    <h2 class="section-title tr-text">QR Kodu Tara</h2>
+    <p style="color:var(--muted);max-width:480px;margin:0.8rem auto 0;font-size:0.9rem;line-height:1.7;" class="en-text">
+      Once you deploy this site to GitHub Pages, a QR code will auto-generate below for easy sharing. Anyone can scan it to access the full dictionary.
+    </p>
+    <p style="color:var(--muted);max-width:480px;margin:0.8rem auto 0;font-size:0.9rem;line-height:1.7;" class="tr-text">
+      Bu siteyi GitHub Pages'e deploy ettikten sonra, aşağıda kolay paylaşım için bir QR kod otomatik oluşturulacaktır. Herkes tam sözlüğe erişmek için tarayabilir.
+    </p>
+    <div class="qr-box">
+      <div id="qrcode"></div>
+      <p class="qr-url" id="qrUrl"></p>
+    </div>
+    <p class="qr-instructions en-text">Point your phone camera at the QR code above to open the site. Works on iOS and Android without any app needed.</p>
+    <p class="qr-instructions tr-text">Siteyi açmak için telefon kameranızı yukarıdaki QR koda yöneltin. Herhangi bir uygulama gerekmeksizin iOS ve Android'de çalışır.</p>
+  </div>
+</section>
+
+<!-- DEPLOY -->
+<section id="deploy">
+  <div class="section-container">
+    <p class="section-tag en-text">Go Live</p>
+    <p class="section-tag tr-text">Yayınla</p>
+    <h2 class="section-title en-text">Deploy to GitHub Pages</h2>
+    <h2 class="section-title tr-text">GitHub Pages'e Deploy Et</h2>
+    <div class="deploy-steps">
+      <div class="deploy-step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4 class="en-text">Create a GitHub Repository</h4>
+          <h4 class="tr-text">GitHub Repository Oluştur</h4>
+          <p class="en-text">Go to github.com → New Repository. Name it <code>magic-of-repeated-words</code>. Set it to Public.</p>
+          <p class="tr-text">github.com'a git → Yeni Depo. Adını <code>magic-of-repeated-words</code> olarak belirle. Genel (Public) olarak ayarla.</p>
+        </div>
+      </div>
+      <div class="deploy-step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4 class="en-text">Upload This HTML File</h4>
+          <h4 class="tr-text">Bu HTML Dosyasını Yükle</h4>
+          <p class="en-text">Rename the downloaded file to <code>index.html</code> and drag it into your repository on GitHub, then commit.</p>
+          <p class="tr-text">İndirilen dosyayı <code>index.html</code> olarak yeniden adlandır ve GitHub'daki depona sürükle, ardından commit yap.</p>
+        </div>
+      </div>
+      <div class="deploy-step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4 class="en-text">Enable GitHub Pages</h4>
+          <h4 class="tr-text">GitHub Pages'i Etkinleştir</h4>
+          <p class="en-text">Go to Settings → Pages → Source: <code>main branch / root</code> → Save. Your site will be live at <code>yourusername.github.io/magic-of-repeated-words</code></p>
+          <p class="tr-text">Ayarlar → Pages → Kaynak: <code>main branch / root</code> → Kaydet. Siten <code>kullaniciadin.github.io/magic-of-repeated-words</code> adresinde yayınlanacak.</p>
+        </div>
+      </div>
+      <div class="deploy-step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4 class="en-text">Update the QR Code URL</h4>
+          <h4 class="tr-text">QR Kod URL'sini Güncelle</h4>
+          <p class="en-text">Open the HTML file, find <code>YOUR_GITHUB_PAGES_URL</code> near the bottom, and replace it with your actual GitHub Pages URL. Re-upload and commit.</p>
+          <p class="tr-text">HTML dosyasını aç, en altta <code>YOUR_GITHUB_PAGES_URL</code> ifadesini bul ve gerçek GitHub Pages URL'inle değiştir. Yeniden yükle ve commit yap.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>
+    <span class="en-text">✦ The Magic of Repeated Words · English Reduplication &amp; Turkish İkileme Dictionary</span>
+    <span class="tr-text">✦ Tekrarlayan Kelimelerin Büyüsü · İngilizce Yineleme &amp; Türkçe İkileme Sözlüğü</span>
+  </p>
+  <p style="margin-top:0.4rem;">Made with <span>♥</span> · 🇬🇧 🇹🇷</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-word" id="modalWord"></div>
+        <div class="modal-phonetic" id="modalPhonetic"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+const WORDS = [
+  // ── SAME WORD REPETITION — ENGLISH ──
+  { word:"Over and Over", phonetic:"/ˈoʊvər ənd ˈoʊvər/", cat:"same", lang:"en", tr:"Tekrar tekrar", en:"Again and again, repeatedly", example:"We talked about this over and over.", structure:["over","and","over"], note:"Emphasises tiresome repetition" },
+  { word:"On and On", phonetic:"/ɒn ənd ɒn/", cat:"same", lang:"en", tr:"Durmadan", en:"Continuously without stopping", example:"The rain went on and on all night.", structure:["on","and","on"], note:"Suggests something continues too long" },
+  { word:"More and More", phonetic:"/mɔːr ənd mɔːr/", cat:"same", lang:"en", tr:"Gitgide daha çok", en:"Increasingly, to a greater degree", example:"She became more and more confident.", structure:["more","and","more"], note:"Describes a gradual increase" },
+  { word:"Never Never", phonetic:"/ˈnɛvər ˈnɛvər/", cat:"same", lang:"en", tr:"Asla asla (kesinlikle hiçbir zaman)", en:"Absolutely never, with strong emphasis", example:"I will never never do that again.", structure:["never","never"], note:"Strong emphatic negation" },
+  { word:"Come Come", phonetic:"/kʌm kʌm/", cat:"same", lang:"en", tr:"Hadi gel, cesarlan", en:"An expression urging calm or action", example:"Come come, don't be shy!", structure:["come","come"], note:"Often used as gentle encouragement" },
+  { word:"Pretty Pretty", phonetic:"/ˈprɪti ˈprɪti/", cat:"same", lang:"en", tr:"Pek tatlı, çok güzel", en:"Very cute or appealing (emphatic)", example:"The baby is pretty pretty.", structure:["pretty","pretty"], note:"Informal, affectionate emphasis" },
+  { word:"Out and Out", phonetic:"/aʊt ənd aʊt/", cat:"same", lang:"en", tr:"Tamamen, düpedüz", en:"Thorough, absolute, complete", example:"He is an out and out liar.", structure:["out","and","out"], note:"Used to intensify a description" },
+  { word:"Step by Step", phonetic:"/stɛp baɪ stɛp/", cat:"same", lang:"en", tr:"Adım adım", en:"Gradually, one stage at a time", example:"We are going to handle this step by step.", structure:["step","by","step"], note:"Suggests careful, methodical progress" },
+  { word:"Half and Half", phonetic:"/hɑːf ənd hɑːf/", cat:"same", lang:"en", tr:"Yarı yarıya, ortaya ortaya", en:"Divided equally; 50-50", example:"I finished my homework half and half.", structure:["half","and","half"], note:"Equal division or mixture" },
+  { word:"Eye to Eye", phonetic:"/aɪ tə aɪ/", cat:"same", lang:"en", tr:"Hemfikir olmak", en:"To agree, share the same view", example:"Tom and Mary see eye to eye on this.", structure:["eye","to","eye"], note:"Used in 'see eye to eye'" },
+  { word:"Day by Day", phonetic:"/deɪ baɪ deɪ/", cat:"same", lang:"en", tr:"Günden güne", en:"Gradually over each passing day", example:"My brother is getting better day by day.", structure:["day","by","day"], note:"Marks gradual, steady change" },
+  { word:"Bit by Bit", phonetic:"/bɪt baɪ bɪt/", cat:"same", lang:"en", tr:"Yavaş yavaş, azar azar", en:"Little by little, gradually", example:"She is cleaning the house bit by bit.", structure:["bit","by","bit"], note:"Slow, incremental progress" },
+  { word:"One by One", phonetic:"/wʌn baɪ wʌn/", cat:"same", lang:"en", tr:"Birer birer, tek tek", en:"Each in succession, individually", example:"They were interrogated one by one.", structure:["one","by","one"], note:"Sequential order" },
+  { word:"By and By", phonetic:"/baɪ ənd baɪ/", cat:"same", lang:"en", tr:"Çok geçmeden, yakında", en:"Before long, soon, eventually", example:"By and by the party ended and everyone went home.", structure:["by","and","by"], note:"Old-fashioned but still used" },
+  { word:"Heart to Heart", phonetic:"/hɑːt tə hɑːt/", cat:"same", lang:"en", tr:"Samimiyetle, yürekten", en:"Sincerely, openly and honestly", example:"They sat down for a heart to heart conversation.", structure:["heart","to","heart"], note:"Describes frank, emotional talks" },
+  { word:"Hand in Hand", phonetic:"/hænd ɪn hænd/", cat:"same", lang:"en", tr:"El ele, birlikte", en:"Together, side by side", example:"Friendship and trust go hand in hand.", structure:["hand","in","hand"], note:"Also literal: holding hands" },
+  { word:"Face to Face", phonetic:"/feɪs tə feɪs/", cat:"same", lang:"en", tr:"Yüz yüze", en:"In person, directly opposite", example:"The classic game brings two people face to face.", structure:["face","to","face"], note:"In-person interaction" },
+  { word:"Side by Side", phonetic:"/saɪd baɪ saɪd/", cat:"same", lang:"en", tr:"Yan yana", en:"Next to each other, together", example:"Different cultures live side by side in this city.", structure:["side","by","side"], note:"Suggests coexistence" },
+  { word:"Through and Through", phonetic:"/θruː ənd θruː/", cat:"same", lang:"en", tr:"Tümüyle, baştan aşağı", en:"Completely, in every way", example:"That man is an egotist through and through.", structure:["through","and","through"], note:"Total, absolute quality" },
+  { word:"Back to Back", phonetic:"/bæk tə bæk/", cat:"same", lang:"en", tr:"Arka arkaya, üst üste", en:"Consecutively without a break", example:"Those two films will be shooting back to back.", structure:["back","to","back"], note:"In sequence, consecutive" },
+  { word:"Now and Then", phonetic:"/naʊ ənd ðɛn/", cat:"same", lang:"en", tr:"Ara sıra, zaman zaman", en:"Occasionally, from time to time", example:"We still meet now and then for coffee.", structure:["now","and","then"], note:"Infrequent occurrence" },
+  { word:"Again and Again", phonetic:"/əˈɡɛn ənd əˈɡɛn/", cat:"same", lang:"en", tr:"Defalarca, tekrar tekrar", en:"Repeatedly, many times over", example:"She checked her notes again and again.", structure:["again","and","again"], note:"Strong emphasis on repetition" },
+
+  // ── SAME WORD REPETITION — TURKISH ──
+  { word:"Ağır ağır", phonetic:"/ˈaɾ.ɨɾ ˈaɾ.ɨɾ/", cat:"same", lang:"tr", tr:"Yavaş yavaş, ağır tempoda", en:"Very slowly, in a heavy manner", example:"O kadar ağır ağır yürüdü ki partiye geç kaldık.", structure:["ağır","ağır"], note:"Manner: slow and heavy movement" },
+  { word:"Koşa koşa", phonetic:"/ko.ˈʃa ko.ˈʃa/", cat:"same", lang:"tr", tr:"Koşarak, çok hızlı şekilde", en:"Running, in a great hurry", example:"Geç kaldığından okula koşa koşa geldi.", structure:["koşa","koşa"], note:"Verbal reduplication (gerund form)" },
+  { word:"Uzun uzun", phonetic:"/u.ˈzun u.ˈzun/", cat:"same", lang:"tr", tr:"Çok uzun süre, uzadıkça uzayan", en:"For a very long time, at great length", example:"Uzun uzun ağaçların altında uzanmıştı.", structure:["uzun","uzun"], note:"Adjectival repetition for intensity" },
+  { word:"Deste deste", phonetic:"/dɛs.ˈtɛ dɛs.ˈtɛ/", cat:"same", lang:"tr", tr:"Demet demet, çok büyük miktarda", en:"In bunches, in great quantities", example:"Deste deste kağıtları odasına taşıdı.", structure:["deste","deste"], note:"Noun repetition = large quantity" },
+  { word:"Baka baka", phonetic:"/ba.ˈka ba.ˈka/", cat:"same", lang:"tr", tr:"Bakarak, uzun süre bakış atarak", en:"While staring for a long time", example:"Telefona baka baka gözleri bozuldu.", structure:["baka","baka"], note:"Verbal gerund reduplication" },
+  { word:"Şıril şıril", phonetic:"/ʃɨ.rɨl ˈʃɨ.rɨl/", cat:"same", lang:"tr", tr:"Şırıl şırıl akan, babıldayan", en:"Babbling, rippling (of water)", example:"Yakındaki nehir şıril şıril akıyordu.", structure:["şıril","şıril"], note:"Onomatopoeia reduplication" },
+  { word:"Gide gide", phonetic:"/ɡi.ˈdɛ ɡi.ˈdɛ/", cat:"same", lang:"tr", tr:"Gittikçe, gide gide", en:"As one goes along, gradually", example:"Bu yolda gide gide bacakları ağırmıştı.", structure:["gide","gide"], note:"Gerund form for continuous action" },
+  { word:"Tatlı tatlı", phonetic:"/tat.lɨ ˈtat.lɨ/", cat:"same", lang:"tr", tr:"Tatlı bir şekilde, şirin şirin", en:"Sweetly, in a sweet manner", example:"Arkadaşıyla tatlı tatlı konuşuyor.", structure:["tatlı","tatlı"], note:"Adjectival repetition for manner" },
+  { word:"Güle güle", phonetic:"/ɡy.ˈlɛ ɡy.ˈlɛ/", cat:"same", lang:"tr", tr:"Güler yüzle, gülümseyerek / güle güle git", en:"Happily; also the Turkish farewell (goodbye)", example:"Evine güle güle döndü.", structure:["güle","güle"], note:"Also the classic Turkish farewell" },
+  { word:"Sessiz sessiz", phonetic:"/sɛs.siz ˈsɛs.siz/", cat:"same", lang:"tr", tr:"Hiç ses çıkarmadan, sessizce", en:"Completely silently", example:"Bizi sessiz sessiz dinlemeye başlamış.", structure:["sessiz","sessiz"], note:"Intensified silence" },
+  { word:"Usu usul", phonetic:"/u.su ˈu.sul/", cat:"same", lang:"tr", tr:"Sessiz sedasız, usulca, gizlice", en:"Quietly, gently, stealthily", example:"Usu usul ailesinin odasına girdi.", structure:["usu","usul"], note:"Near-identical form reduplication" },
+  { word:"Tek tek", phonetic:"/tɛk ˈtɛk/", cat:"same", lang:"tr", tr:"Birer birer, tek tek", en:"One by one, individually", example:"Elmaları ağaçlardan tek tek topladı.", structure:["tek","tek"], note:"Turkish equivalent of 'one by one'" },
+  { word:"Damla damla", phonetic:"/dam.la ˈdam.la/", cat:"same", lang:"tr", tr:"Damlayarak, damla damla", en:"Drop by drop", example:"Çatıdan damla damla su akmış.", structure:["damla","damla"], note:"Gradual, dripping movement" },
+  { word:"Cıvıl cıvıl", phonetic:"/dʒɨ.vɨl ˈdʒɨ.vɨl/", cat:"same", lang:"tr", tr:"Cıvıl cıvıl, şen şakrak", en:"Lively, bustling, cheerfully noisy", example:"Bugün cıvıl cıvıl olmuştu.", structure:["cıvıl","cıvıl"], note:"Onomatopoeia for lively noise" },
+  { word:"Yer yer", phonetic:"/jɛr ˈjɛr/", cat:"same", lang:"tr", tr:"Bazı yerlerde, yer yer", en:"Here and there, in some places", example:"Konuşmasını yer yer bölerek örnekler vermişti.", structure:["yer","yer"], note:"Spatial distribution" },
+  { word:"Işıl ışıl", phonetic:"/ɨ.ʃɨl ˈɨ.ʃɨl/", cat:"same", lang:"tr", tr:"Parıl parıl parlayan, ışıl ışıl", en:"Gleaming, glistening, sparkling", example:"Saçları ışıl ışıl parlıyordu.", structure:["ışıl","ışıl"], note:"Visual onomatopoeia" },
+
+  // ── SIMILAR SOUND REPETITION — ENGLISH ──
+  { word:"Bread and Butter", phonetic:"/brɛd ənd ˈbʌtər/", cat:"similar", lang:"en", tr:"Ekmek teknesi, geçim kaynağı", en:"One's main source of income or livelihood", example:"This job is my bread and butter.", structure:["bread","and","butter"], note:"Alliteration (b-b); idiomatic" },
+  { word:"Bag and Baggage", phonetic:"/bæɡ ənd ˈbæɡɪdʒ/", cat:"similar", lang:"en", tr:"Bütün eşyasıyla, çoluk çocuk", en:"With all one's belongings; completely", example:"They were thrown out bag and baggage.", structure:["bag","and","baggage"], note:"Alliteration (b-b)" },
+  { word:"Vice Versa", phonetic:"/ˌvaɪs ˈvɜːrsə/", cat:"similar", lang:"en", tr:"Karşılıklı olarak, tersine de geçerli", en:"With the main terms reversed; the other way around", example:"She helps him and vice versa.", structure:["vice","versa"], note:"Latin origin; alliterative (v-v)" },
+  { word:"Black and Blue", phonetic:"/blæk ənd bluː/", cat:"similar", lang:"en", tr:"Morarmış, bere içinde", en:"Covered in bruises", example:"Tom's face was all black and blue.", structure:["black","and","blue"], note:"Alliteration (bl-bl)" },
+  { word:"Safe and Sound", phonetic:"/seɪf ənd saʊnd/", cat:"similar", lang:"en", tr:"Kazasız belasız, sağ salim", en:"Unharmed and out of danger", example:"She came home safe and sound.", structure:["safe","and","sound"], note:"Alliteration (s-s)" },
+  { word:"Chop and Change", phonetic:"/tʃɒp ənd tʃeɪndʒ/", cat:"similar", lang:"en", tr:"Sağı solu belli olmamak, sürekli değiştirmek", en:"To keep changing plans or decisions", example:"The teacher is always chopping and changing decisions.", structure:["chop","and","change"], note:"Alliteration (ch-ch)" },
+  { word:"Spick and Span", phonetic:"/spɪk ənd spæn/", cat:"similar", lang:"en", tr:"Tertemiz, pırıl pırıl", en:"Perfectly clean and neat", example:"She keeps her room spick and span.", structure:["spick","and","span"], note:"Alliteration (sp-sp)" },
+  { word:"Prim and Proper", phonetic:"/prɪm ənd ˈprɒpər/", cat:"similar", lang:"en", tr:"Dikkatli ve kuralcı, terbiyeli", en:"Very formal and correct in behaviour", example:"He grew up in a prim and proper family.", structure:["prim","and","proper"], note:"Alliteration (pr-pr)" },
+  { word:"Bed and Board", phonetic:"/bɛd ənd bɔːrd/", cat:"similar", lang:"en", tr:"Yatak ve yemek, konaklama", en:"Lodging and food provided", example:"This job provides bed and board.", structure:["bed","and","board"], note:"Alliteration (b-b)" },
+  { word:"Born and Bred", phonetic:"/bɔːrn ənd brɛd/", cat:"similar", lang:"en", tr:"Doğma büyüme", en:"Born and raised in a particular place", example:"I am Turkish born and bred.", structure:["born","and","bred"], note:"Rhyming (born/bred) + alliteration" },
+  { word:"Live and Learn", phonetic:"/lɪv ənd lɜːrn/", cat:"similar", lang:"en", tr:"Yaşayarak öğrenmek", en:"You gain wisdom through experience", example:"You failed this time, but live and learn!", structure:["live","and","learn"], note:"Alliteration (l-l)" },
+  { word:"Hale and Hearty", phonetic:"/heɪl ənd ˈhɑːrti/", cat:"similar", lang:"en", tr:"Sağlıklı ve enerjik, zinde", en:"Strong and in good health", example:"She may be old but she's hale and hearty.", structure:["hale","and","hearty"], note:"Alliteration (h-h)" },
+  { word:"Part and Parcel", phonetic:"/pɑːrt ənd ˈpɑːrsəl/", cat:"similar", lang:"en", tr:"Ayrılmaz parçası, tamamlayıcı kısım", en:"An integral part of something", example:"Stress is part and parcel of this job.", structure:["part","and","parcel"], note:"Alliteration (p-p)" },
+  { word:"Free and Easy", phonetic:"/friː ənd ˈiːzi/", cat:"similar", lang:"en", tr:"Rahat ve doğal, serbest tavırlı", en:"Relaxed and informal in manner", example:"She is very free and easy with people.", structure:["free","and","easy"], note:"Near rhyme (ee sounds)" },
+  { word:"First and Foremost", phonetic:"/fɜːrst ənd ˈfɔːrmoʊst/", cat:"similar", lang:"en", tr:"Her şeyden önce, en başta", en:"Most importantly, above all else", example:"First and foremost, be honest.", structure:["first","and","foremost"], note:"Alliteration (f-f)" },
+  { word:"Fast and Furious", phonetic:"/fæst ənd ˈfjʊəriəs/", cat:"similar", lang:"en", tr:"Hızlı ve coşkulu, gümbür gümbür", en:"Very rapid and intense", example:"He came here fast and furious.", structure:["fast","and","furious"], note:"Alliteration (f-f)" },
+  { word:"Rough and Ready", phonetic:"/rʌf ənd ˈrɛdi/", cat:"similar", lang:"en", tr:"İşe yarar, kaba ama elverişli", en:"Crude but functional; good enough", example:"That is a rough and ready solution.", structure:["rough","and","ready"], note:"Alliteration (r-r)" },
+  { word:"Bright and Breezy", phonetic:"/braɪt ənd ˈbriːzi/", cat:"similar", lang:"en", tr:"Canlı ve neşeli, enerjik", en:"Cheerful, lively and confident", example:"She has a bright and breezy personality.", structure:["bright","and","breezy"], note:"Alliteration (br-br)" },
+  { word:"Belt and Braces", phonetic:"/bɛlt ənd ˈbreɪsɪz/", cat:"similar", lang:"en", tr:"İşi sağlama alma, çift önlem", en:"Taking extra precautions; doubly careful", example:"That requires a belt and braces approach.", structure:["belt","and","braces"], note:"Alliteration (b-b)" },
+
+  // ── SIMILAR SOUND — TURKISH ──
+  { word:"Eciş bücüş", phonetic:"/ɛ.dʒiʃ by.dʒyʃ/", cat:"similar", lang:"tr", tr:"Çirkin ve biçimsiz, eğri büğrü", en:"Misshapen, distorted, crooked-looking", example:"Bütün meyve ve sebzeler eciş bücüş olmuştu.", structure:["eciş","bücüş"], note:"Similar vowel sounds (e-ü)" },
+  { word:"Çer çöp", phonetic:"/tʃɛr tʃœp/", cat:"similar", lang:"tr", tr:"Çöp, dağınık şeyler", en:"Rubbish, clutter, worthless bits", example:"Öğrenciler bahçedeki çer çöpü toplamıştı.", structure:["çer","çöp"], note:"Alliteration (ç-ç)" },
+  { word:"Pılı pırtı", phonetic:"/pɨ.lɨ pɨr.tɨ/", cat:"similar", lang:"tr", tr:"Eşyaları, eski püskü eşyalar", en:"One's belongings, odds and ends", example:"Bütün pılı pırtısını valizine koyup evi terk etti.", structure:["pılı","pırtı"], note:"Rhyming, similar vowels" },
+  { word:"Abur cubur", phonetic:"/a.bur dʒu.bur/", cat:"similar", lang:"tr", tr:"Abur cubur yiyecekler, sağlıksız yiyecekler", en:"Junk food, unhealthy snacks", example:"Böyle abur cubur yemeye devam ederse sağlığı bozulacak.", structure:["abur","cubur"], note:"Rhyming (a/cu rhyme)" },
+  { word:"Şan şöhret", phonetic:"/ʃan ˈʃœh.rɛt/", cat:"similar", lang:"tr", tr:"Şöhret ve ün, ad san", en:"Fame and glory, renown", example:"Ünlü oyuncu bütün şan şöhretini bir kenara bırakıp piyasadan çekildi.", structure:["şan","şöhret"], note:"Alliteration (ş-ş)" },
+  { word:"Mutlu mesut", phonetic:"/mut.lu mɛ.sut/", cat:"similar", lang:"tr", tr:"Mutlu ve memnun, bahtiyar", en:"Happy and content, blissfully", example:"Onlar çok mutlu mesut yaşıyorlar.", structure:["mutlu","mesut"], note:"Alliteration (m-m)" },
+  { word:"Çoluk çocuk", phonetic:"/tʃo.luk tʃo.dʒuk/", cat:"similar", lang:"tr", tr:"Aile bireyleri, çoluk çocuk", en:"Family, kith and kin, children", example:"Herkes kendi çoluk çocuğuna sahip çıksın!", structure:["çoluk","çocuk"], note:"Alliteration (ç-ç)" },
+  { word:"Mırın kırın", phonetic:"/mɨ.rɨn kɨ.rɨn/", cat:"similar", lang:"tr", tr:"Söylenip durarak, isteksizce", en:"Grumbling, muttering reluctantly", example:"Mırın kırın ede ede ödevini yaptı.", structure:["mırın","kırın"], note:"Rhyming (ın-ın)" },
+  { word:"Hayal meyal", phonetic:"/ha.jal mɛ.jal/", cat:"similar", lang:"tr", tr:"Bulanık, belirsizce hatırlanan", en:"Vaguely, dimly, hazily", example:"Rüyamı hayal meyal hatırlıyorum.", structure:["hayal","meyal"], note:"Rhyming (al-al)" },
+  { word:"Eş dost", phonetic:"/ɛʃ dost/", cat:"similar", lang:"tr", tr:"Yakın çevre, dost akraba", en:"Friends, family and acquaintances", example:"Düğünümüze bütün eş dost davetlidir.", structure:["eş","dost"], note:"Near rhyme (eş/dost)" },
+  { word:"Eski püskü", phonetic:"/ɛs.ki ˈpys.ky/", cat:"similar", lang:"tr", tr:"Eski ve yıpranmış, hurda", en:"Old and worn out, shabby", example:"Eski püskü bu evden kurtulmuştuk sonunda.", structure:["eski","püskü"], note:"Rhyming (i/ü vowels)" },
+  { word:"Kılık kıyafet", phonetic:"/kɨ.lɨk kɨ.ja.fɛt/", cat:"similar", lang:"tr", tr:"Giyim kuşam, kıyafet", en:"Clothing, appearance, attire", example:"Okula her gün kılık kıyafeti düzgün bir biçimde gelir.", structure:["kılık","kıyafet"], note:"Alliteration (k-k)" },
+  { word:"Dayalı döşeli", phonetic:"/da.ja.lɨ dœ.ʃɛ.li/", cat:"similar", lang:"tr", tr:"Döşenmiş, mobilyalı", en:"Well-furnished, fully equipped", example:"Evlerini dayalı döşeli almışlar.", structure:["dayalı","döşeli"], note:"Alliteration (d-d)" },
+  { word:"Kem küm", phonetic:"/kɛm kym/", cat:"similar", lang:"tr", tr:"Bocalayarak, hem hem de yaparak", en:"Hemming and hawing, speaking hesitantly", example:"Kem küm ede ede konuşuyordu.", structure:["kem","küm"], note:"Vowel harmony pair (e/ü)" },
+  { word:"Ivır zıvır", phonetic:"/ɨ.vɨr zɨ.vɨr/", cat:"similar", lang:"tr", tr:"Ufak tefek şeyler, gereksiz eşyalar", en:"Trinkets, odds and ends, knick-knacks", example:"Ev bir ton ıvır zıvır ile doluydu.", structure:["ıvır","zıvır"], note:"Rhyming (ır-ır)" },
+  { word:"Abuk sabuk", phonetic:"/a.buk sa.buk/", cat:"similar", lang:"tr", tr:"Saçma sapan, mantıksız", en:"Nonsensical, absurd, talking rubbish", example:"Sınıfın ortasında abuk sabuk konuşuyordu.", structure:["abuk","sabuk"], note:"Rhyming (uk-uk)" },
+
+  // ── ANTONYMS — ENGLISH ──
+  { word:"Pros and Cons", phonetic:"/proʊz ənd kɒnz/", cat:"antonym", lang:"en", tr:"Artıları ve eksileri", en:"The advantages and disadvantages", example:"Using technology has pros and cons.", structure:["pros","and","cons"], note:"Latin: pro = for, contra = against" },
+  { word:"Ups and Downs", phonetic:"/ʌps ənd daʊnz/", cat:"antonym", lang:"en", tr:"İniş çıkışlar, iyi ve kötü zamanlar", en:"Good times and bad times", example:"Our firm had ups and downs but we never quit.", structure:["ups","and","downs"], note:"Antonyms: up ↔ down" },
+  { word:"Right and Left", phonetic:"/raɪt ənd lɛft/", cat:"antonym", lang:"en", tr:"Sağa sola, her yöne", en:"In all directions; everywhere", example:"People were running right and left.", structure:["right","and","left"], note:"Antonyms: right ↔ left" },
+  { word:"Backwards and Forwards", phonetic:"/ˈbækwərdz ənd ˈfɔːrwərdz/", cat:"antonym", lang:"en", tr:"Bir o yana bir bu yana, ileri geri", en:"Back and forth; in both directions", example:"The boat went backwards and forwards in this sea.", structure:["backwards","and","forwards"], note:"Directional antonyms" },
+  { word:"Life or Death", phonetic:"/laɪf ɔːr dɛθ/", cat:"antonym", lang:"en", tr:"Ölüm kalım, hayati", en:"Critically important; potentially fatal", example:"That is a life or death situation at this point.", structure:["life","or","death"], note:"Antonyms: life ↔ death" },
+  { word:"Day and Night", phonetic:"/deɪ ənd naɪt/", cat:"antonym", lang:"en", tr:"Gece gündüz, durmaksızın", en:"All the time, without stopping", example:"I worked day and night to win this race.", structure:["day","and","night"], note:"Antonyms: day ↔ night" },
+  { word:"Sink or Swim", phonetic:"/sɪŋk ɔːr swɪm/", cat:"antonym", lang:"en", tr:"Ya batarsın ya çıkarsın", en:"Succeed or fail by your own efforts", example:"Moving to a new country alone felt like sink or swim.", structure:["sink","or","swim"], note:"Antonyms in outcome" },
+  { word:"In and Out", phonetic:"/ɪn ənd aʊt/", cat:"antonym", lang:"en", tr:"Gidip gelmek, ara ara", en:"Coming and going; intermittently", example:"He was in and out of meetings all day.", structure:["in","and","out"], note:"Antonyms: in ↔ out" },
+  { word:"On and Off", phonetic:"/ɒn ənd ɒf/", cat:"antonym", lang:"en", tr:"Aralıklı olarak, zaman zaman", en:"Intermittently, not continuously", example:"It has been raining on and off since yesterday.", structure:["on","and","off"], note:"Antonyms: on ↔ off" },
+  { word:"From Start to Finish", phonetic:"/frɒm stɑːrt tə ˈfɪnɪʃ/", cat:"antonym", lang:"en", tr:"Baştan sona, ta başından beri", en:"From beginning to end; completely", example:"I read the book from start to finish.", structure:["start","to","finish"], note:"Antonyms: start ↔ finish" },
+  { word:"High and Low", phonetic:"/haɪ ənd loʊ/", cat:"antonym", lang:"en", tr:"Her yerde, her köşeyi", en:"Everywhere; in every possible place", example:"I searched high and low for my phone.", structure:["high","and","low"], note:"Antonyms: high ↔ low" },
+  { word:"Come and Go", phonetic:"/kʌm ənd ɡoʊ/", cat:"antonym", lang:"en", tr:"Gelip gitmek, geçici olmak", en:"To arrive and depart; to be transient", example:"Opportunities come and go.", structure:["come","and","go"], note:"Antonyms: come ↔ go" },
+  { word:"Black and White", phonetic:"/blæk ənd waɪt/", cat:"antonym", lang:"en", tr:"Siyah beyaz, net ve açık", en:"Clear and unambiguous; monochrome", example:"The old photo was black and white.", structure:["black","and","white"], note:"Antonyms: black ↔ white" },
+  { word:"Sooner or Later", phonetic:"/ˈsuːnər ɔːr ˈleɪtər/", cat:"antonym", lang:"en", tr:"Er ya da geç, eninde sonunda", en:"Eventually, at some point", example:"He will find out the truth sooner or later.", structure:["sooner","or","later"], note:"Antonyms: sooner ↔ later" },
+  { word:"For Better or Worse", phonetic:"/fər ˈbɛtər ɔːr wɜːrs/", cat:"antonym", lang:"en", tr:"İyisiyle kötüsüyle, ne olursa olsun", en:"Whatever the outcome, good or bad", example:"I accepted this job for better or worse.", structure:["better","or","worse"], note:"Antonyms: better ↔ worse" },
+  { word:"Rain or Shine", phonetic:"/reɪn ɔːr ʃaɪn/", cat:"antonym", lang:"en", tr:"Yağmur yağsa da güneş açsa da, her koşulda", en:"Whatever the weather or circumstances", example:"I will be there rain or shine.", structure:["rain","or","shine"], note:"Weather antonyms" },
+  { word:"All or None", phonetic:"/ɔːl ɔːr nʌn/", cat:"antonym", lang:"en", tr:"Ya hep ya hiç", en:"Everything or nothing; no middle ground", example:"The offer is all or none, so we can't change it.", structure:["all","or","none"], note:"Antonyms: all ↔ none" },
+  { word:"One Way or Another", phonetic:"/wʌn weɪ ɔːr əˈnʌðər/", cat:"antonym", lang:"en", tr:"Ya öyle ya da böyle, bir şekilde", en:"By some means, somehow", example:"You will obey us one way or another.", structure:["one way","or","another"], note:"Implies all options considered" },
+
+  // ── ANTONYMS — TURKISH ──
+  { word:"İyi kötü", phonetic:"/i.ji kœ.ty/", cat:"antonym", lang:"tr", tr:"Az çok, bir şekilde", en:"More or less, somehow, for better or worse", example:"İyi kötü bir şekilde anlaşıyorduk.", structure:["iyi","kötü"], note:"Antonyms: iyi (good) ↔ kötü (bad)" },
+  { word:"Aşağı yukarı", phonetic:"/a.ʃa.ɨ ju.ka.rɨ/", cat:"antonym", lang:"tr", tr:"Yaklaşık olarak, tahminen", en:"Approximately, roughly, more or less", example:"Sınavdan aşağı yukarı 70 puan alırım.", structure:["aşağı","yukarı"], note:"Antonyms: down ↔ up → means 'approximately'" },
+  { word:"Az çok", phonetic:"/az tʃok/", cat:"antonym", lang:"tr", tr:"Biraz, bir ölçüde", en:"To some degree, more or less, somewhat", example:"Az çok demeden herkesten yardım toplayalım.", structure:["az","çok"], note:"Antonyms: az (little) ↔ çok (much)" },
+  { word:"Alt üst", phonetic:"/alt yst/", cat:"antonym", lang:"tr", tr:"Karmakarışık, tepesi üstü", en:"Upside down, in total disarray", example:"Bu olay sonucunda alt üst olmuştu.", structure:["alt","üst"], note:"Antonyms: alt (bottom) ↔ üst (top)" },
+  { word:"Er geç", phonetic:"/ɛr ɡɛtʃ/", cat:"antonym", lang:"tr", tr:"Eninde sonunda, mutlaka", en:"Sooner or later, eventually", example:"Er geç bunu yapanı bulacağım.", structure:["er","geç"], note:"Antonyms: er (early) ↔ geç (late)" },
+  { word:"İleri geri", phonetic:"/i.lɛ.ri ɡɛ.ri/", cat:"antonym", lang:"tr", tr:"İleri geri gitmek, oradan oraya", en:"Back and forth, to and fro", example:"İleri gidip geri gelmekten başım dönmüştü.", structure:["ileri","geri"], note:"Antonyms: ileri (forward) ↔ geri (back)" },
+  { word:"Acı tatlı", phonetic:"/a.dʒɨ tat.lɨ/", cat:"antonym", lang:"tr", tr:"Hem acı hem tatlı, buruk", en:"Bittersweet, mixed emotions", example:"Bu okuldayken acı tatlı bir sürü anı biriktirdim.", structure:["acı","tatlı"], note:"Antonyms: acı (bitter) ↔ tatlı (sweet)" },
+  { word:"Bata çıka", phonetic:"/ba.ta tʃɨ.ka/", cat:"antonym", lang:"tr", tr:"Güçlükle, zorlukla", en:"Struggling through difficulties", example:"Bataklıktan bata çıka çıkmışlardı.", structure:["bata","çıka"], note:"Antonyms: bat (sink) ↔ çık (rise)" },
+  { word:"Enine boyuna", phonetic:"/ɛ.ni.nɛ bo.ju.na/", cat:"antonym", lang:"tr", tr:"Her yönden, ayrıntılı biçimde", en:"Thoroughly, in depth, from every angle", example:"Onu enine boyuna iyice süzmüştüm.", structure:["enine","boyuna"], note:"Width ↔ length = completely" },
+  { word:"Dost düşman", phonetic:"/dost dyʃ.man/", cat:"antonym", lang:"tr", tr:"Herkes, dost da düşman da", en:"Friend and foe alike; everyone", example:"Sen ne dost düşman tanımadan bağırıyorsun.", structure:["dost","düşman"], note:"Antonyms: dost (friend) ↔ düşman (enemy)" },
+  { word:"İrili ufaklı", phonetic:"/i.ri.li u.fak.lɨ/", cat:"antonym", lang:"tr", tr:"Büyüklü küçüklü, çeşitli boyutta", en:"Of various sizes, both large and small", example:"İrili ufaklı bol bol kayısı aldım.", structure:["irili","ufaklı"], note:"Antonyms: iri (large) ↔ ufak (small)" },
+  { word:"İniş çıkış", phonetic:"/i.niʃ tʃɨ.kɨʃ/", cat:"antonym", lang:"tr", tr:"İniş ve çıkışlar, dalgalanmalar", en:"Ups and downs, fluctuations", example:"Hayat hep iniş çıkışlarla doludur.", structure:["iniş","çıkış"], note:"Antonyms: iniş (descent) ↔ çıkış (ascent)" },
+  { word:"Ölüm kalım", phonetic:"/œ.lym ka.lɨm/", cat:"antonym", lang:"tr", tr:"Hayati önem taşıyan, ölüm kalım meselesi", en:"Life or death, of vital importance", example:"Bu konu onun için bir ölüm kalım meselesiydi.", structure:["ölüm","kalım"], note:"Antonyms: ölüm (death) ↔ kalım (survival)" },
+  { word:"Gece gündüz", phonetic:"/ɡɛ.dʒɛ ɡyn.dyz/", cat:"antonym", lang:"tr", tr:"Durmadan, bütün gün boyunca", en:"Around the clock, day and night", example:"Gece gündüz ders çalışmasının sonucunda üniversiteyi kazandı.", structure:["gece","gündüz"], note:"Antonyms: gece (night) ↔ gündüz (day)" },
+
+  // ── RHYMING — ENGLISH ──
+  { word:"Tittle Tattle", phonetic:"/ˈtɪtəl ˈtætəl/", cat:"rhyme", lang:"en", tr:"Dedikodu, boş lakırdı", en:"Gossip, trivial talk, idle chatter", example:"I don't like getting involved in tittle-tattle.", structure:["tittle","tattle"], note:"Rhyming: ttle-ttle; ablauting vowels (i→a)" },
+  { word:"Helter Skelter", phonetic:"/ˌhɛltər ˈskɛltər/", cat:"rhyme", lang:"en", tr:"Telaşla, karmakarışık halde", en:"In disorderly haste, chaotically", example:"Everyone ran helter-skelter when the alarm went off.", structure:["helter","skelter"], note:"Rhyming: -elter/-elter" },
+  { word:"Heebie Jeebies", phonetic:"/ˈhiːbi ˈdʒiːbiz/", cat:"rhyme", lang:"en", tr:"Ürkme, korku hissi, rahatsızlık", en:"A feeling of anxiety or discomfort", example:"That old castle gives me the heebie jeebies.", structure:["heebie","jeebies"], note:"Rhyming: -eebies/-eebies" },
+  { word:"Itsy Bitsy", phonetic:"/ˈɪtsi ˈbɪtsi/", cat:"rhyme", lang:"en", tr:"Mini minnacık, çok küçük", en:"Extremely small and tiny", example:"Dwarfs live in an itsy bitsy house.", structure:["itsy","bitsy"], note:"Rhyming: -itsy/-itsy" },
+  { word:"Hurly Burly", phonetic:"/ˈhɜːrli ˈbɜːrli/", cat:"rhyme", lang:"en", tr:"Kargaşa, gürültü patırtı", en:"Commotion, noisy confusion and activity", example:"He enjoys the hurly-burly of city life.", structure:["hurly","burly"], note:"Rhyming: -urly/-urly" },
+  { word:"Fiddle Faddle", phonetic:"/ˈfɪdəl ˈfædəl/", cat:"rhyme", lang:"en", tr:"Saçmalık, boş laf", en:"Nonsense, trivial matters, rubbish", example:"You are talking fiddle faddle right now.", structure:["fiddle","faddle"], note:"Rhyming: -iddle/-addle; ablaut" },
+  { word:"Teeny Weeny", phonetic:"/ˈtiːni ˈwiːni/", cat:"rhyme", lang:"en", tr:"Küçücük, minicik", en:"Very small, tiny", example:"I just need a teeny weeny bit of salt.", structure:["teeny","weeny"], note:"Rhyming: -eeny/-eeny" },
+  { word:"Willy Nilly", phonetic:"/ˌwɪli ˈnɪli/", cat:"rhyme", lang:"en", tr:"İstemeden, zorla", en:"Whether one likes it or not; haphazardly", example:"She said yes willy nilly.", structure:["willy","nilly"], note:"Rhyming: -illy/-illy" },
+  { word:"Hubble Bubble", phonetic:"/ˈhʌbəl ˈbʌbəl/", cat:"rhyme", lang:"en", tr:"Curcuna, velvele, kargaşa", en:"Noisy confusion, commotion, uproar", example:"There was hubble bubble in the kitchen before dinner.", structure:["hubble","bubble"], note:"Rhyming: -ubble/-ubble" },
+  { word:"Shilly Shally", phonetic:"/ˈʃɪli ˈʃæli/", cat:"rhyme", lang:"en", tr:"Tereddüt, kararsızlık", en:"Indecision, hesitation, procrastination", example:"Stop being in shilly shally!", structure:["shilly","shally"], note:"Rhyming: -illy/-ally; ablaut" },
+  { word:"Easy Peasy", phonetic:"/ˌiːzi ˈpiːzi/", cat:"rhyme", lang:"en", tr:"Çocuk oyuncağı, çok kolay", en:"Very easy, effortless (informal)", example:"That assignment was easy peasy lemon squeezy!", structure:["easy","peasy"], note:"Rhyming: -ezy/-ezy" },
+  { word:"Fuddy Duddy", phonetic:"/ˈfʌdi ˈdʌdi/", cat:"rhyme", lang:"en", tr:"Eski kafalı kimse, tutucu", en:"An old-fashioned or boring person", example:"My grandpa is a bit of a fuddy duddy.", structure:["fuddy","duddy"], note:"Rhyming: -uddy/-uddy" },
+  { word:"Mumbo Jumbo", phonetic:"/ˌmʌmboʊ ˈdʒʌmboʊ/", cat:"rhyme", lang:"en", tr:"Saçmalık, anlaşılmaz jargon", en:"Complicated and meaningless language", example:"I don't understand this legal mumbo-jumbo.", structure:["mumbo","jumbo"], note:"Rhyming: -umbo/-umbo" },
+  { word:"Super Duper", phonetic:"/ˌsuːpər ˈduːpər/", cat:"rhyme", lang:"en", tr:"Şahane, mükemmel, süper", en:"Excellent, wonderful (informal/childish)", example:"That is a super duper idea!", structure:["super","duper"], note:"Rhyming: -uper/-uper" },
+  { word:"Nitty Gritty", phonetic:"/ˌnɪti ˈɡrɪti/", cat:"rhyme", lang:"en", tr:"Asıl mesele, işin özü", en:"The most important or basic aspects of a matter", example:"Let's get down to the nitty gritty.", structure:["nitty","gritty"], note:"Rhyming: -itty/-itty" },
+  { word:"Chit Chat", phonetic:"/ˈtʃɪt tʃæt/", cat:"rhyme", lang:"en", tr:"Sohbet, gevezelik", en:"Light informal conversation, small talk", example:"My mother was chit chatting with our guest.", structure:["chit","chat"], note:"Rhyming: ch-ch; ablaut (i→a)" },
+  { word:"Flip Flop", phonetic:"/ˈflɪp flɒp/", cat:"rhyme", lang:"en", tr:"Terlik / Karar değiştirme", en:"Sandals with a thong; also: to change one's position", example:"Don't forget to wear your flip flops.", structure:["flip","flop"], note:"Rhyming: -lip/-lop; ablaut" },
+  { word:"Pell Mell", phonetic:"/ˌpɛl ˈmɛl/", cat:"rhyme", lang:"en", tr:"Aceleyle, telâşlı bir şekilde", en:"In a rushed, disorderly manner", example:"She left the room pell mell.", structure:["pell","mell"], note:"Rhyming: -ell/-ell" },
+  { word:"Dilly Dally", phonetic:"/ˈdɪli ˈdæli/", cat:"rhyme", lang:"en", tr:"Oyalanmak, vakit geçirmek", en:"To waste time, loiter, procrastinate", example:"He was dilly dallying instead of doing his homework.", structure:["dilly","dally"], note:"Rhyming: -illy/-ally; ablaut" },
+  { word:"Mish Mash", phonetic:"/ˈmɪʃ mæʃ/", cat:"rhyme", lang:"en", tr:"Karmakarışık şeyler, düzensiz karışım", en:"A confused mixture; a hodgepodge", example:"His speech was a mish-mash of ideas.", structure:["mish","mash"], note:"Rhyming: -ish/-ash; ablaut" },
+  { word:"Rolly Poly", phonetic:"/ˈroʊli ˈpoʊli/", cat:"rhyme", lang:"en", tr:"Tombul, yuvarlak şekilli", en:"Short and plump in shape; a type of pudding", example:"The baby is such a rolly poly little thing.", structure:["rolly","poly"], note:"Rhyming: -olly/-olly" },
+  { word:"Higgledy Piggledy", phonetic:"/ˈhɪɡəldi ˈpɪɡəldi/", cat:"rhyme", lang:"en", tr:"Karmakarışık, dağınık", en:"In a confused or disorderly manner", example:"The books were piled higgledy piggledy.", structure:["higgledy","piggledy"], note:"Rhyming: -igledy/-igledy" },
+
+  // ── RHYMING — TURKISH ──
+  { word:"Allak bullak", phonetic:"/al.lak bul.lak/", cat:"rhyme", lang:"tr", tr:"Karmakarışık, şaşkın ve düzensiz", en:"Confused, chaotic, in total disarray", example:"Anlattıklarımdan sonra kafası allak bullak olmuş gibiydi.", structure:["allak","bullak"], note:"Rhyming: -llak/-llak; ablaut (a→u)" },
+  { word:"Cart curt", phonetic:"/tʃart tʃurt/", cat:"rhyme", lang:"tr", tr:"Kaba bir şekilde, ani ve sert", en:"Rudely interrupting; abruptly butting in", example:"Lafıma cart curt girip durma!", structure:["cart","curt"], note:"Rhyming: -art/-urt; onomatopoeia" },
+  { word:"Çatlak patlak", phonetic:"/tʃat.lak pat.lak/", cat:"rhyme", lang:"tr", tr:"Çatlamış ve yırtılmış, dağılmış", en:"Full of cracks and splits, chapped", example:"Dudakları kuruluktan çatlak patlak olmuştu.", structure:["çatlak","patlak"], note:"Rhyming: -atlak/-atlak; ablaut (ç→p)" },
+  { word:"Takır tukur", phonetic:"/ta.kɨr tu.kur/", cat:"rhyme", lang:"tr", tr:"Şakır şukur, gürültülü çarpma sesleri", en:"Clattering, rattling sounds", example:"Makine takır tukur sesler çıkarıyordu.", structure:["takır","tukur"], note:"Onomatopoeia rhyming pair" },
+  { word:"Zar zor", phonetic:"/zar zor/", cat:"rhyme", lang:"tr", tr:"Güçlükle, zor bela", en:"Barely, with great difficulty", example:"Depremden zar zor kurtulmuşlar.", structure:["zar","zor"], note:"Near rhyme (ar/or); z alliteration" },
+  { word:"Açık seçik", phonetic:"/a.tʃɨk sɛ.tʃik/", cat:"rhyme", lang:"tr", tr:"Çok açık, belirgin, net", en:"Very clear and obvious, unambiguous", example:"Çok açık seçik bir tarzı vardı.", structure:["açık","seçik"], note:"Rhyming: -çık/-çik" },
+  { word:"Paldir küldür", phonetic:"/pal.dɨr kyl.dyr/", cat:"rhyme", lang:"tr", tr:"Gürültüyle, hantallıkla", en:"Clumsily and noisily, lumbering", example:"Paldir küldür yürümesiyle tüm dikkatler üzerine çekti.", structure:["paldir","küldür"], note:"Rhyming: -ldır/-ldür; onomatopoeia" },
+  { word:"Zır zır", phonetic:"/zɨr zɨr/", cat:"rhyme", lang:"tr", tr:"Ağlaya ağlaya, sızlanarak", en:"Whining and crying continuously", example:"Zır zır ağlayıp durdu.", structure:["zır","zır"], note:"Same-word rhyme; onomatopoeia" },
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let activeCat = 'all';
+let activeLang = 'both';
+let currentLang = 'en';
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function catColor(cat) {
+  return { same:'badge-same', similar:'badge-similar', antonym:'badge-antonym', rhyme:'badge-rhyme' }[cat];
+}
+function catLabel(cat, lang) {
+  const labels = {
+    same: { en:'Same Word', tr:'Aynı Kelime' },
+    similar: { en:'Similar Sound', tr:'Benzer Ses' },
+    antonym: { en:'Antonyms', tr:'Zıt Anlamlı' },
+    rhyme: { en:'Rhyming', tr:'Kafiyeli' }
+  };
+  return labels[cat][lang] || labels[cat]['en'];
+}
+function langBadge(l) {
+  return l === 'en'
+    ? '<span class="card-cat-badge badge-en">🇬🇧 EN</span>'
+    : '<span class="card-cat-badge badge-tr">🇹🇷 TR</span>';
+}
+
+function buildCard(w, idx) {
+  const catBadge = `<span class="card-cat-badge ${catColor(w.cat)}" data-en="${catLabel(w.cat,'en')}" data-tr="${catLabel(w.cat,'tr')}">${catLabel(w.cat, currentLang)}</span>`;
+  const structHTML = w.structure.map((s,i) =>
+    i < w.structure.length-1
+      ? `<span class="struct-pill">${s}</span><span class="struct-plus">+</span>`
+      : `<span class="struct-pill">${s}</span>`
+  ).join('');
+
+  return `
+  <div class="word-card" data-cat="${w.cat}" data-lang="${w.lang}" data-idx="${idx}" onclick="openModal(${idx})">
+    <div class="card-top">
+      <div style="display:flex;gap:0.4rem;margin-bottom:0.5rem;flex-wrap:wrap;">
+        ${catBadge}
+        ${langBadge(w.lang)}
+      </div>
+      <div class="card-word">${w.word}</div>
+      <div class="card-phonetic">${w.phonetic}</div>
+    </div>
+    <div class="card-body">
+      <div class="card-meaning-row">
+        <span class="card-flag">🇹🇷</span>
+        <span class="card-meaning card-meaning-tr">${w.tr}</span>
+      </div>
+      <div class="card-meaning-row">
+        <span class="card-flag">🇬🇧</span>
+        <span class="card-meaning">${w.en}</span>
+      </div>
+      <div class="card-example">"${w.example}"</div>
+      <div class="card-structure">${structHTML}</div>
+    </div>
+  </div>`;
+}
+
+function renderCards() {
+  const grid = document.getElementById('cardsGrid');
+  grid.innerHTML = WORDS.map((w, i) => buildCard(w, i)).join('');
+  filterCards();
+}
+
+function filterCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  let shown = 0;
+  document.querySelectorAll('.word-card').forEach((card) => {
+    const idx = parseInt(card.dataset.idx);
+    const w = WORDS[idx];
+    const matchCat = activeCat === 'all' || card.dataset.cat === activeCat;
+    const matchLang = activeLang === 'both' || card.dataset.lang === activeLang;
+    const matchQ = !q || w.word.toLowerCase().includes(q) || w.tr.toLowerCase().includes(q) || w.en.toLowerCase().includes(q) || w.example.toLowerCase().includes(q);
+    const visible = matchCat && matchLang && matchQ;
+    card.classList.toggle('hidden', !visible);
+    if (visible) shown++;
+  });
+  const lbl = currentLang === 'tr'
+    ? `${shown} kelime gösteriliyor`
+    : `Showing ${shown} words`;
+  document.getElementById('wordCount').textContent = lbl;
+}
+
+function filterCat(cat, btn) {
+  activeCat = cat;
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterCards();
+}
+function filterLang(lang, btn) {
+  activeLang = lang;
+  document.querySelectorAll('.lang-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterCards();
+}
+
+// ─── LANGUAGE TOGGLE ─────────────────────────────────────────────────────────
+function setLang(lang) {
+  currentLang = lang;
+  document.body.classList.toggle('tr', lang === 'tr');
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === lang.toUpperCase()));
+  filterCards();
+}
+
+// ─── MODAL ───────────────────────────────────────────────────────────────────
+function openModal(idx) {
+  const w = WORDS[idx];
+  document.getElementById('modalWord').textContent = w.word;
+  document.getElementById('modalPhonetic').textContent = w.phonetic;
+  const structHTML = w.structure.map(s => `<span class="struct-pill">${s}</span>`).join('<span class="struct-plus">+</span>');
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-row">
+      <label>🇹🇷 Turkish Meaning / Türkçe Anlam</label>
+      <div class="value tr">${w.tr}</div>
+    </div>
+    <div class="modal-row">
+      <label>🇬🇧 English Meaning / İngilizce Anlam</label>
+      <div class="value">${w.en}</div>
+    </div>
+    <div class="modal-divider"></div>
+    <div class="modal-row">
+      <label>📖 Example / Örnek Cümle</label>
+      <div class="value example">"${w.example}"</div>
+    </div>
+    <div class="modal-divider"></div>
+    <div class="modal-row">
+      <label>🏗 Structure / Yapı</label>
+      <div class="modal-struct-pills">${structHTML}</div>
+    </div>
+    <div class="modal-row" style="margin-top:0.8rem">
+      <label>💡 Note / Not</label>
+      <div class="value" style="font-size:0.85rem;color:var(--muted)">${w.note}</div>
+    </div>
+    <div class="modal-row" style="margin-top:0.8rem">
+      <label>🏷 Category / Kategori</label>
+      <span class="card-cat-badge ${catColor(w.cat)}" style="margin-top:0.3rem">${catLabel(w.cat,'en')} · ${catLabel(w.cat,'tr')}</span>
+      &nbsp;${langBadge(w.lang)}
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalBtn();
+}
+function closeModalBtn() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
+
+// ─── QR CODE ─────────────────────────────────────────────────────────────────
+function initQR() {
+  const url = window.location.href.split('?')[0].split('#')[0] || 'YOUR_GITHUB_PAGES_URL';
+  document.getElementById('qrUrl').textContent = url;
+  new QRCode(document.getElementById('qrcode'), {
+    text: url,
+    width: 200,
+    height: 200,
+    colorDark: '#0d1b2a',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  });
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  renderCards();
+  initQR();
+});
+</script>
+</body>
+</html>
